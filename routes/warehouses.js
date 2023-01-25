@@ -8,10 +8,11 @@ router.get("/", (req, res, next) => {
   res.status(201).json();
 });
 
-router.get("/", (req, res) => {
-  const readWarehouses = fs.readFileSync("../data/warehouses.json");
-  const warehouses = JSON.parse(readWarehouses);
-  res.json(warehouses);
+//GET SINGLE WAREHOUSE
+router.get("/:id", (req, res) => {
+  const warehouseList = JSON.parse(fs.readFileSync("./data/warehouses.json"));
+
+  res.json(warehouseList.find((warehouse) => req.params.id === warehouse.id));
 });
 
 module.exports = router;
