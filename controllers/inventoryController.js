@@ -2,8 +2,9 @@ const knex = require("knex")(require("../knexfile"));
 
 const index = (_req, res) => {
   knex
-    .select("*")
+    .select("inventories.*", "warehouses.warehouse_name")
     .from("inventories")
+    .innerJoin("warehouses", "warehouses.id", "=", "inventories.warehouse_id")
     .then((inventories) => {
       res.json(inventories);
     })
