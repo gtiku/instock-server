@@ -30,6 +30,4 @@ const index = (_req, res) => {
     });
 };
 
-module.exports = { index };
-
-module.exports = { getWarehouse };
+module.exports = { index, getWarehouse };
