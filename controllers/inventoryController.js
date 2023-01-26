@@ -2,9 +2,10 @@ const knex = require("knex")(require("../knexfile"));
 
 const getInventoryItem = (req, res) => {
     knex
-        .select("*")
+        .select("inventories.*", "warehouses.warehouse_name")
         .from("inventories")
-        .where({ id: req.params.id })
+        .where("inventories.id", "=", req.params.id)
+        .join("warehouses", "warehouses.id", "inventories.warehouse_id")
         .then((item) => {
             res.json(item[0]);
         })
