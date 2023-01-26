@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const inventory = require("../data/inventories.json");
+const inventoryController = require("../controllers/inventoryController");
 
 // GET INVENTORIES
 router.get("/", (req, res) => {
@@ -26,5 +27,9 @@ router.get("/", (req, res) => {
     });
   }
 });
+
+// GET single inventory item
+
+router.get("/:id", inventoryController.getInventoryItem);
 
 module.exports = router;
