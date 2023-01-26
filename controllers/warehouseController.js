@@ -1,5 +1,19 @@
 const knex = require("knex")(require("../knexfile"));
 
+
+const addWarehouse = (req, res) =>  {
+    console.log(req.body);
+
+    knex("warehouses")
+        .insert(req.body)
+        .then((warehouse)=> {
+            const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
+            res.status(201).location(newWarehouseURL).send(newWarehouseURL);
+            console.log(newWarehouseURL);
+          })
+        .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`))
+};
+
 const getWarehouse = (req, res) => {
   knex
     .select("*")
@@ -30,4 +44,4 @@ const index = (_req, res) => {
     });
 };
 
-module.exports = { index, getWarehouse };
+module.exports = { index, getWarehouse, addWarehouse };
