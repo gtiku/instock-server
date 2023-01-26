@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require("fs");
 const warehouseController = require("../controllers/warehouseController");
 
+// GET ALL WAREHOUSES
 // GET WAREHOUSES
 router.route("/").get(warehouseController.index);
 
