@@ -1,8 +1,10 @@
 const router = require("express").Router();
 const inventoryController = require("../controllers/inventoryController");
 
-// GET INVENTORIES
-router.route("/").get(inventoryController.index);
+router
+  .route("/")
+  .get(inventoryController.index)
+  .post(inventoryController.postItem);
 
 // GET single inventory item
 
