@@ -6,8 +6,9 @@ router
   .get(inventoryController.index)
   .post(inventoryController.postItem);
 
-// GET single inventory item
-
-router.get("/:id", inventoryController.getInventoryItem);
+router
+  .route("/:id")
+  .get(inventoryController.getInventoryItem)
+  .put(inventoryController.updateItem);
 
 module.exports = router;
