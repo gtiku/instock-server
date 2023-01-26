@@ -1,26 +1,8 @@
 const knex = require("knex")(require("../knexfile"));
-const warehouses = require('../data/warehouses.json');
 
-
-
-const index = (_req, res) => {
-    knex
-      .select("*")
-      .from('warehouses')
-      .then((warehouses) => {
-        res.json(warehouses);
-      })
-      .catch((error) => {
-        res.status(400).json({
-          error: true,
-          message: "Server cannot be reached",
-          specific: error,
-        });
-      });
-  };
 
 const addWarehouse = (req, res) =>  {
-    console.log(res.body);
+    console.log(req.body);
 
     knex("warehouses")
         .insert(req.body)
@@ -29,8 +11,36 @@ const addWarehouse = (req, res) =>  {
             res.status(201).location(newWarehouseURL).send(newWarehouseURL);
           })
         .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`))
-    
-}
+};
 
-module.exports = { index, addWarehouse };
+const getWarehouse = (req, res) => {
+  knex
+    .select("*")
+    .from("warehouses")
+    .where({ id: req.params.id })
+    .then((warehouse) => {
+      res.json(warehouse[0]);
+    })
+    .catch((error) => {
+      res.status(404).send("Warehouse not found.");
+      console.log(error);
+    });
+};
 
+const index = (_req, res) => {
+  knex
+    .select("*")
+    .from("warehouses")
+    .then((warehouses) => {
+      res.json(warehouses);
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: true,
+        message: "Server cannot be reached",
+        specific: error,
+      });
+    });
+};
+
+module.exports = { index, getWarehouse, addWarehouse };
