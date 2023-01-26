@@ -9,6 +9,7 @@ const addWarehouse = (req, res) =>  {
         .then((warehouse)=> {
             const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
             res.status(201).location(newWarehouseURL).send(newWarehouseURL);
+            console.log(newWarehouseURL);
           })
         .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`))
 };
