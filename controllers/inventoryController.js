@@ -2,6 +2,21 @@ const { v4: uuid } = require("uuid");
 
 const knex = require("knex")(require("../knexfile"));
 
+const getInventoryItem = (req, res) => {
+  knex
+    .select("inventories.*", "warehouses.warehouse_name")
+    .from("inventories")
+    .where("inventories.id", "=", req.params.id)
+    .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+    .then((item) => {
+      res.json(item[0]);
+    })
+    .catch((error) => {
+      res.status(404).send("Inventory item not found.");
+      console.log(error);
+    });
+};
+
 const index = (_req, res) => {
   knex
     .select("inventories.*", "warehouses.warehouse_name")
