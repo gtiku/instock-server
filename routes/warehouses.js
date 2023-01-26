@@ -3,10 +3,8 @@ const router = express.Router();
 const fs = require("fs");
 const warehouseController = require("../controllers/warehouseController");
 
-// GET WAREHOUSES
-router.get("/", (req, res, next) => {
-  res.status(201).json();
-});
+// GET WAREHOUSES (KNEX)
+router.route("/").get(warehouseController.index);
 
 //GET SINGLE WAREHOUSE
 router.get("/:id", warehouseController.getWarehouse);
