@@ -1,10 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 
 const addWarehouse = (req, res) => {
-  console.log(req.body);
-const addWarehouse = (req, res) => {
-  console.log(req.body);
-
   knex("warehouses")
     .insert(req.body)
     .then((warehouse) => {
@@ -87,4 +83,10 @@ const getWarehouseInventory = (req, res) => {
     });
 };
 
-module.exports = { index, getWarehouse, addWarehouse, deleteWarehouse, getWarehouseInventory };
+module.exports = {
+  index,
+  getWarehouse,
+  addWarehouse,
+  deleteWarehouse,
+  getWarehouseInventory,
+};
