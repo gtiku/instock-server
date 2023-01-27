@@ -45,4 +45,21 @@ const index = (_req, res) => {
     });
 };
 
-module.exports = { index, getWarehouse, addWarehouse };
+//GET individual warehouse inventory list
+
+const getWarehouseInventory = (req, res) => {
+  knex
+    .select("*")
+    .from("inventories")
+    .where("warehouse_id", "=", req.params.id)
+    // .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+    .then((inventories) => {
+      res.json(inventories);
+    })
+    .catch((error) => {
+      res.status(404).send("No inventory found at this location.");
+      console.log(error);
+    });
+};
+
+module.exports = { index, getWarehouse, addWarehouse, getWarehouseInventory };
