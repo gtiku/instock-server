@@ -1,5 +1,7 @@
 const knex = require("knex")(require("../knexfile"));
 
+// GET individual warehouse
+
 const getWarehouse = (req, res) => {
   knex
     .select("*")
@@ -13,6 +15,8 @@ const getWarehouse = (req, res) => {
       console.log(error);
     });
 };
+
+// GET full list of warehouses
 
 const index = (_req, res) => {
   knex
