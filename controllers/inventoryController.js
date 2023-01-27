@@ -1,5 +1,4 @@
 const { v4: uuid } = require("uuid");
-
 const knex = require("knex")(require("../knexfile"));
 
 const getInventoryItem = (req, res) => {
@@ -119,7 +118,7 @@ const deleteItem = (req, res) => {
     })
     .catch((error) => {
       res.status(404).send("This item does not exist");
-    })
-}
+    });
+};
 
 module.exports = { index, getInventoryItem, postItem, updateItem, deleteItem };
