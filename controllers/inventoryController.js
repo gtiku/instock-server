@@ -108,4 +108,18 @@ const updateItem = (req, res) => {
     });
 };
 
-module.exports = { index, getInventoryItem, postItem, updateItem };
+const deleteItem = (req, res) => {
+  knex
+    .select("*")
+    .from("inventories")
+    .where({ id: req.params.id })
+    .delete()
+    .then((response) => {
+      res.sendStatus(204);
+    })
+    .catch((error) => {
+      res.status(404).send("This item does not exist");
+    })
+}
+
+module.exports = { index, getInventoryItem, postItem, updateItem, deleteItem };

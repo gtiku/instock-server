@@ -9,6 +9,7 @@ router
 router
   .route("/:id")
   .get(inventoryController.getInventoryItem)
-  .put(inventoryController.updateItem);
+  .put(inventoryController.updateItem)
+  .delete(inventoryController.deleteItem);
 
 module.exports = router;
