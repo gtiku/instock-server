@@ -21,5 +21,12 @@ router
   .route("/")
   .get(warehouseController.index)
   .post(warehouseController.addWarehouse);
+router
+  .route("/")
+  .get(warehouseController.index)
+  .post(warehouseController.addWarehouse);
+
+//GET INVENTORY BY WAREHOUSE ID
+router.route("/:id/inventories").get(warehouseController.getWarehouseInventory);
 
 module.exports = router;
