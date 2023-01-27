@@ -14,6 +14,21 @@ const getWarehouse = (req, res) => {
     });
 };
 
+const deleteWarehouse = (req, res) => {
+  knex("warehouses")
+    .delete()
+    .where({ id: req.params.id })
+    .then(() => {
+      res
+        .status(204)
+        .send(`${req.params.warehouse_name} warehouse has been deleted.`);
+    })
+    .catch((error) => {
+      res.status(400).send(`Error deleting ${req.params.warehouse_id}`);
+      console.log(error);
+    });
+};
+
 const index = (_req, res) => {
   knex
     .select("*")
@@ -30,4 +45,4 @@ const index = (_req, res) => {
     });
 };
 
-module.exports = { index, getWarehouse };
+module.exports = { index, getWarehouse, deleteWarehouse };
