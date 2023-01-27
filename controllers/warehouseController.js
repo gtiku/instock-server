@@ -1,17 +1,16 @@
 const knex = require("knex")(require("../knexfile"));
 
+const addWarehouse = (req, res) => {
+  console.log(req.body);
 
-const addWarehouse = (req, res) =>  {
-    console.log(req.body);
-
-    knex("warehouses")
-        .insert(req.body)
-        .then((warehouse)=> {
-            const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
-            res.status(201).location(newWarehouseURL).send(newWarehouseURL);
-            console.log(newWarehouseURL);
-          })
-        .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`))
+  knex("warehouses")
+    .insert(req.body)
+    .then((warehouse) => {
+      const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
+      res.status(201).location(newWarehouseURL).send(newWarehouseURL);
+      console.log(newWarehouseURL);
+    })
+    .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`));
 };
 
 const getWarehouse = (req, res) => {
@@ -27,6 +26,8 @@ const getWarehouse = (req, res) => {
       console.log(error);
     });
 };
+
+// GET full list of warehouses
 
 const index = (_req, res) => {
   knex
@@ -44,4 +45,21 @@ const index = (_req, res) => {
     });
 };
 
-module.exports = { index, getWarehouse, addWarehouse };
+//GET individual warehouse inventory list
+
+const getWarehouseInventory = (req, res) => {
+  knex
+    .select("*")
+    .from("inventories")
+    .where("warehouse_id", "=", req.params.id)
+    // .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+    .then((inventories) => {
+      res.json(inventories);
+    })
+    .catch((error) => {
+      res.status(404).send("No inventory found at this location.");
+      console.log(error);
+    });
+};
+
+module.exports = { index, getWarehouse, addWarehouse, getWarehouseInventory };
