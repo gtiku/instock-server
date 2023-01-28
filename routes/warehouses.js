@@ -6,9 +6,12 @@ router
   .get(warehouseController.index)
   .post(warehouseController.addWarehouse);
 
+//EDIT WAREHOUSE DETAILS & CONTACT INFO
+
 router
   .route("/:id")
   .get(warehouseController.getWarehouse)
+  .put(warehouseController.editWarehouse)
   .delete(warehouseController.deleteWarehouse);
 
 router.route("/:id/inventories").get(warehouseController.getWarehouseInventory);
