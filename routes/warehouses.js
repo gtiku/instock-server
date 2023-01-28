@@ -11,8 +11,6 @@ router
   .get(warehouseController.getWarehouse)
   .delete(warehouseController.deleteWarehouse);
 
-router
-  .route("/:id/inventories")
-  .get(warehouseController.getWarehouseInventory);
+router.route("/:id/inventories").get(warehouseController.getWarehouseInventory);
 
 module.exports = router;
