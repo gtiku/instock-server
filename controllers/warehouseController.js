@@ -1,22 +1,136 @@
 const knex = require("knex")(require("../knexfile"));
 
+
 const addWarehouse = (req, res) => {
+
+  const { id, warehouse_name, address, city, country, contact_name, contact_position, contact_phone, contact_email } = req.body;
+    console.log(req.body);
+
+  if ( !id || !warehouse_name || !address || !city || !country || !contact_name || !contact_position || !contact_phone || !contact_email ) {
+    return res
+      .status(405)
+      .json({ error: true, message: "Warehouse information not received" });
+  }
+
+  const validPhone = (input) => {
+    let check = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+      return check.test(input);
+  }
+
+  if (!validPhone(contact_phone)) {
+    return res
+      .status(405)
+      .json({ error: true, message: "Updated phone number is not valid" });
+  } 
+
+  const formatPhoneNumber = (number) => {
+    let phoneNumberArray = number.toString().split("");
+    phoneNumberArray.splice(0, 0, "(")
+    phoneNumberArray.splice(4, 0, ") ")
+    phoneNumberArray.splice(8, 0, "-")
+    return "+1 " + phoneNumberArray.join("")  
+}
+const phoneNumber = formatPhoneNumber(contact_phone);
+
+const validEmail = (input) => {
+  let check = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return check.test(String(input).toLowerCase());
+}
+
+if (!validEmail(contact_email)) {
+  return res
+    .status(405)
+    .json({ error: true, message: "Updated email address is not valid" });
+} 
+
   knex("warehouses")
-    .insert(req.body)
+    .insert({
+      id: id, 
+      warehouse_name: warehouse_name,
+      address: address,
+      city: city, 
+      country: country,
+      contact_name: contact_name,
+      contact_position: contact_position, 
+      contact_phone: phoneNumber, 
+      contact_email: contact_email
+    })
     .then((warehouse) => {
       const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
       res.status(201).location(newWarehouseURL).send(newWarehouseURL);
       console.log(newWarehouseURL);
     })
     .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`));
+  
+
+  }
+
+
+
+// Edit an existing Warehouse details and contact info
+
+const editWarehouse = (req, res) => {
+
+  const { warehouse_name, address, city, country, contact_name, contact_position, contact_phone, contact_email } = req.body;
+    console.log(req.body);
+
+  if ( !warehouse_name || !address || !city || !country || !contact_name || !contact_position || !contact_phone || !contact_email ) {
+    return res
+      .status(405)
+      .json({ error: true, message: "Updated warehouse information not received" });
+  }
+
+  const validPhone = (input) => {
+    let check = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+      return check.test(input);
+  }
+
+  if (!validPhone(contact_phone)) {
+    return res
+      .status(405)
+      .json({ error: true, message: "Updated phone number is not valid" });
+  } 
+
+  const formatPhoneNumber = (number) => {
+    let phoneNumberArray = number.toString().split("");
+    phoneNumberArray.splice(0, 0, "(")
+    phoneNumberArray.splice(4, 0, ") ")
+    phoneNumberArray.splice(8, 0, "-")
+    return "+1 " + phoneNumberArray.join("")  
+}
+const phoneNumber = formatPhoneNumber(contact_phone);
+console.log(req.params.id);
+
+const validEmail = (input) => {
+  let check = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return check.test(String(input).toLowerCase());
+}
+
+if (!validEmail(contact_email)) {
+  return res
+    .status(405)
+    .json({ error: true, message: "Updated email address is not valid" });
+} 
+
+  
   knex("warehouses")
-    .insert(req.body)
-    .then((warehouse) => {
-      const newWarehouseURL = `/api/v1/warehouses/${warehouse[0]}`;
-      res.status(201).location(newWarehouseURL).send(newWarehouseURL);
-      console.log(newWarehouseURL);
+    .where("warehouses.id", "=", req.params.id)
+    .update({
+      id: req.params.id, 
+      warehouse_name: warehouse_name,
+      address: address,
+      city: city, 
+      country: country,
+      contact_name: contact_name,
+      contact_position: contact_position, 
+      contact_phone: phoneNumber, 
+      contact_email: contact_email
     })
-    .catch((err) => res.status(400).send(`Error creating Warehouse: ${err}`));
+    .then((updatedWarehouse) => {
+      res.json(updatedWarehouse);
+      console.log(updatedWarehouse);
+    })
+    .catch((err) => res.status(400).send(`Error updating Warehouse: ${err}`));
 };
 
 const getWarehouse = (req, res) => {
@@ -87,6 +201,7 @@ module.exports = {
   index,
   getWarehouse,
   addWarehouse,
+  editWarehouse,
   deleteWarehouse,
   getWarehouseInventory,
 };
