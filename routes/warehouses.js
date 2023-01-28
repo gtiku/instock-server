@@ -21,10 +21,13 @@ router
   .route("/")
   .get(warehouseController.index)
   .post(warehouseController.addWarehouse);
+
+//EDIT WAREHOUSE DETAILS & CONTACT INFO
 router
-  .route("/")
-  .get(warehouseController.index)
-  .post(warehouseController.addWarehouse);
+.route("/:id")
+.get(warehouseController.getWarehouse)
+.put(warehouseController.editWarehouse)
+
 
 //GET INVENTORY BY WAREHOUSE ID
 router.route("/:id/inventories").get(warehouseController.getWarehouseInventory);
