@@ -42,6 +42,45 @@ const postItem = (req, res) => {
   const status = req.body.status;
   const quantity = +req.body.quantity;
 
+  if (!item_name) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Provide an item name." });
+  }
+
+  if (!description) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Provide an item description." });
+  }
+
+  if (!category) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Select an item category." });
+  }
+
+  if (status === "In Stock" && quantity === 0) {
+    return res.status(400).json({
+      error: true,
+      message: `Enter the quantity that is housed at this warehouse. If There is no available stock for this item, set the status to "Out of Stock."`,
+    });
+  }
+
+  if (status === "Out of Stock" && quantity > 0) {
+    return res.status(400).json({
+      error: true,
+      message: `Invalid input. If item is "Out of Stock," quantity should be zero.`,
+    });
+  }
+
+  if (!warehouse_id) {
+    return res.status(400).json({
+      error: true,
+      message: "Select the warehouse in which the item is or will be stored.",
+    });
+  }
+
   const newItem = {
     id: uuid(),
     warehouse_id: warehouse_id,
@@ -65,25 +104,51 @@ const postItem = (req, res) => {
 
 const updateItem = (req, res) => {
   const item_id = req.params.id;
-  // const warehouse_id = req.body.warehouse;
-  // const item_name = req.body.name;
-  const warehouse_id = req.body.warehouse_id;
-  const item_name = req.body.item_name;
+  const warehouse_id = req.body.warehouse;
+  const item_name = req.body.name;
   const description = req.body.description;
   const category = req.body.category;
   const status = req.body.status;
   const quantity = +req.body.quantity;
 
-  // TEST DATA
-  // {
-  //   "warehouse_id": "2922c286-16cd-4d43-ab98-c79f698aeab0",
-  //   "warehouse_name": "Manhattan",
-  //   "item_name": "New new name",
-  //   "description": "new description",
-  //   "category": "Electronics",
-  //   "status": "In Stock",
-  //   "quantity": 10
-  // }
+  if (!item_name) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Provide an item name." });
+  }
+
+  if (!description) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Provide an item description." });
+  }
+
+  if (!category) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Select an item category." });
+  }
+
+  if (status === "In Stock" && quantity === 0) {
+    return res.status(400).json({
+      error: true,
+      message: `Enter the quantity that is housed at this warehouse. If There is no available stock for this item, set the status to "Out of Stock."`,
+    });
+  }
+
+  if (status === "Out of Stock" && quantity > 0) {
+    return res.status(400).json({
+      error: true,
+      message: `Invalid input. If item is "Out of Stock," quantity should be zero.`,
+    });
+  }
+
+  if (!warehouse_id) {
+    return res.status(400).json({
+      error: true,
+      message: "Select the warehouse in which the item is or will be stored.",
+    });
+  }
 
   const updatedItem = {
     id: item_id,
@@ -119,7 +184,7 @@ const deleteItem = (req, res) => {
     })
     .catch((error) => {
       res.status(404).send("This item does not exist");
-    })
-}
+    });
+};
 
 module.exports = { index, getInventoryItem, postItem, updateItem, deleteItem };
