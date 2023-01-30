@@ -1,16 +1,32 @@
 {
   "name": "in_stock-server",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "knex migrate:latest",
+    "seed": "knex seed:run",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
-  }
+    "express": "^4.18.2",
+    "knex": "^2.4.2",
+    "mysql": "^2.18.1",
+    "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gtiku/instock-server.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/gtiku/instock-server/issues"
+  },
+  "homepage": "https://github.com/gtiku/instock-server#readme",
+  "description": ""
 }

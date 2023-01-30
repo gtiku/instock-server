@@ -1,10 +1,17 @@
-const express = require("express");
-const router = express.Router();
-const fs = require("fs");
+const router = require("express").Router();
+const warehouseController = require("../controllers/warehouseController");
 
-// GET WAREHOUSES
-router.get("/", (req, res, next) => {
-  res.status(201).json();
-});
+router
+  .route("/")
+  .get(warehouseController.index)
+  .post(warehouseController.addWarehouse);
+
+router
+  .route("/:id")
+  .get(warehouseController.getWarehouse)
+  .put(warehouseController.editWarehouse)
+  .delete(warehouseController.deleteWarehouse);
+
+router.route("/:id/inventories").get(warehouseController.getWarehouseInventory);
 
 module.exports = router;
