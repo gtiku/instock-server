@@ -217,7 +217,6 @@ const getWarehouseInventory = (req, res) => {
     .select("*")
     .from("inventories")
     .where("warehouse_id", "=", req.params.id)
-    // .join("warehouses", "warehouses.id", "inventories.warehouse_id")
     .then((inventories) => {
       res.json(inventories);
     })
